@@ -2,14 +2,14 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Nút Đỏ Bóng Bẩy Mobile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nút Phát Âm Thanh</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: radial-gradient(circle at center, #000000, #1a1a1a);
+      background: radial-gradient(circle at center, #dadada, #ffffff);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,9 +24,7 @@
       border: none;
       background: radial-gradient(circle at 30% 30%, #ff4d4d, #b30000);
       box-shadow:
-        0 4px 10px rgba(255, 0, 0, 0.6),
-        inset -4px -4px 10px rgba(255,255,255,0.3),
-        inset 4px 4px 10px rgba(0,0,0,0.4);
+        0 4px 10px rgba(255, 0, 0, 0.6);
       position: relative;
       cursor: pointer;
       transition: transform 0.2s ease;
@@ -44,33 +42,34 @@
       filter: blur(2px);
     }
 
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    button:active {
-      transform: scale(0.95);
+    button:active,
+    button.active {
+      transform: scale(0.93);
+      filter: brightness(1.2);
     }
   </style>
 </head>
 <body>
 
   <button id="soundButton"></button>
-  <audio id="mySound" src="buttonclick.mp3" preload="auto"></audio>
+  <audio id="mySound" src= "audio/buttonaudio.mp3" preload="auto"></audio>
 
   <script>
-    const btn = document.getElementById("soundButton");
-    const sound = document.getElementById("mySound");
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("soundButton");
+      const sound = document.getElementById("mySound");
 
-    // Hỗ trợ desktop và mobile
-    btn.addEventListener("click", playSound);
-    btn.addEventListener("touchstart", playSound);
+      const playSound = (e) => {
+        e.preventDefault();
+        sound.currentTime = 0;
+        sound.play().catch(console.warn);
+        btn.classList.add("active");
+        setTimeout(() => btn.classList.remove("active"), 150);
+      };
 
-    function playSound(e) {
-      e.preventDefault(); // tránh "double tap zoom" trên iOS
-      sound.currentTime = 0;
-      sound.play().catch(err => console.warn("Không thể phát âm thanh:", err));
-    }
+      btn.addEventListener("click", playSound);
+      btn.addEventListener("touchstart", playSound);
+    });
   </script>
 
 </body>
